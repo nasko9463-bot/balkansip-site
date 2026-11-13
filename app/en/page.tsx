@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Formats from "../components/Formats";
 
 const cocktails = [
   {
@@ -374,6 +375,9 @@ export default function Home() {
           <a href="#about" onClick={() => setIsNavOpen(false)}>
             About
           </a>
+          <a href="#formats" onClick={() => setIsNavOpen(false)}>
+            Formats
+          </a>
           <a href="#menu" onClick={() => setIsNavOpen(false)}>
             Menu
           </a>
@@ -549,6 +553,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <Formats lang="en" />
 
       <section className="menu-section" id="menu">
         <div className="menu-shell">
@@ -825,6 +831,7 @@ export default function Home() {
 
           <nav className="footer-nav" aria-label="Footer navigation">
             <a href="#about">About</a>
+            <a href="#formats">Formats</a>
             <a href="#menu">Menu</a>
             <a href="#partners">Partners</a>
             <a href="#contact">Contact</a>
