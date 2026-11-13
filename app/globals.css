@@ -5935,3 +5935,35 @@ textarea:focus-visible {
     transform: none;
   }
 }
+
+/* Меню без цени: вдясно стои съдът, в който се сервира коктейлът. */
+
+.sip-meta em {
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+
+  color: color-mix(in srgb, var(--sip-a) 80%, #fff);
+}
+
+.sip-bubbles-short circle {
+  animation-name: sip-bubble-short;
+}
+
+@keyframes sip-bubble-short {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translateY(-26px);
+    opacity: 0;
+  }
+}

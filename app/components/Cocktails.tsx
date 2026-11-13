@@ -3,14 +3,13 @@
 import { type CSSProperties, useEffect, useRef } from "react";
 
 type Lang = "bg" | "en";
-type Glass = "coupe" | "highball" | "rocks";
+type Glass = "lowJar" | "tallJar" | "wine";
 
 type Cocktail = {
   name: Record<Lang, string>;
   base: Record<Lang, string>;
   ingredients: Record<Lang, string[]>;
   volume: string;
-  price: Record<Lang, string>;
   glass: Glass;
   // Цвят на напитката: горе и долу в чашата.
   colors: [string, string];
@@ -28,8 +27,7 @@ const cocktails: Cocktail[] = [
       en: ["vodka", "marigold", "lime", "rose water", "vegan egg white"],
     },
     volume: "180 ml",
-    price: { bg: "7 €", en: "€7" },
-    glass: "coupe",
+    glass: "lowJar",
     colors: ["#f7c948", "#ee9a2b"],
     garnish: "#ff8a1f",
     foam: true,
@@ -54,8 +52,7 @@ const cocktails: Cocktail[] = [
       ],
     },
     volume: "220 ml",
-    price: { bg: "7,50 €", en: "€7.50" },
-    glass: "highball",
+    glass: "tallJar",
     colors: ["#f0584a", "#b9242b"],
     garnish: "#8fd14f",
     sparkling: true,
@@ -75,8 +72,7 @@ const cocktails: Cocktail[] = [
       ],
     },
     volume: "220 ml",
-    price: { bg: "7,50 €", en: "€7.50" },
-    glass: "highball",
+    glass: "tallJar",
     colors: ["#e4532f", "#9c2a1c"],
     garnish: "#5fae3f",
   },
@@ -88,8 +84,7 @@ const cocktails: Cocktail[] = [
       en: ["apricot rakia", "Prosecco", "peach", "bitters", "peach soda"],
     },
     volume: "250 ml",
-    price: { bg: "8 €", en: "€8" },
-    glass: "highball",
+    glass: "wine",
     colors: ["#ffd684", "#f29a52"],
     garnish: "#ff9d6b",
     sparkling: true,
@@ -120,8 +115,7 @@ const cocktails: Cocktail[] = [
       ],
     },
     volume: "180 ml",
-    price: { bg: "8 €", en: "€8" },
-    glass: "rocks",
+    glass: "lowJar",
     colors: ["#d98a3a", "#8c401c"],
     garnish: "#6fbf4a",
   },
@@ -133,8 +127,7 @@ const cocktails: Cocktail[] = [
       en: ["vodka", "brine", "watermelon", "lime"],
     },
     volume: "180 ml",
-    price: { bg: "7 €", en: "€7" },
-    glass: "coupe",
+    glass: "lowJar",
     colors: ["#ff7b8f", "#e23d5e"],
     garnish: "#7ed957",
   },
@@ -158,8 +151,7 @@ const cocktails: Cocktail[] = [
       ],
     },
     volume: "220 ml",
-    price: { bg: "8 €", en: "€8" },
-    glass: "highball",
+    glass: "tallJar",
     colors: ["#e6dd86", "#b9a13f"],
     garnish: "#c9d86a",
     sparkling: true,
@@ -172,8 +164,7 @@ const cocktails: Cocktail[] = [
       en: ["gin", "orange", "thyme", "wormwood", "bitter orange soda"],
     },
     volume: "250 ml",
-    price: { bg: "8 €", en: "€8" },
-    glass: "highball",
+    glass: "wine",
     colors: ["#ffc24a", "#ef8424"],
     garnish: "#ff9a2e",
     sparkling: true,
@@ -209,31 +200,64 @@ const copy = {
   },
 };
 
+const vesselLabel: Record<Glass, Record<Lang, string>> = {
+  lowJar: { bg: "нисък буркан", en: "low jar" },
+  tallJar: { bg: "висок буркан", en: "tall jar" },
+  wine: { bg: "чаша за вино", en: "wine glass" },
+};
+
+// Контур на съда, вътрешност за течността, ниво на течността,
+// допълнителни линии (гърло с резба или столче) и място на резена.
 const glassShapes: Record<
   Glass,
-  { outline: string; inside: string; level: number; extra?: string }
+  {
+    outline: string;
+    inside: string;
+    level: number;
+    lines: string;
+    threads?: string;
+    wheel: [number, number];
+  }
 > = {
-  coupe: {
-    outline: "M20 34 Q22 84 60 88 Q98 84 100 34",
-    inside: "M20 34 Q22 84 60 88 Q98 84 100 34 Z",
-    level: 42,
-    extra: "M60 88 L60 134 M40 138 Q60 130 80 138",
+  lowJar: {
+    outline:
+      "M26 46 L26 60 Q26 66 20 70 Q14 75 15 84 L20 130 Q21 140 31 140 L89 140 Q99 140 100 130 L105 84 Q106 75 100 70 Q94 66 94 60 L94 46",
+    inside:
+      "M26 46 L26 60 Q26 66 20 70 Q14 75 15 84 L20 130 Q21 140 31 140 L89 140 Q99 140 100 130 L105 84 Q106 75 100 70 Q94 66 94 60 L94 46 Z",
+    level: 74,
+    lines: "M23 46 H97",
+    threads: "M26 53 H94 M26 59 H94",
+    wheel: [97, 44],
   },
-  highball: {
-    outline: "M34 16 L38 132 Q38.5 139 45 139 L75 139 Q81.5 139 82 132 L86 16",
-    inside: "M34 16 L38 132 Q38.5 139 45 139 L75 139 Q81.5 139 82 132 L86 16 Z",
-    level: 36,
+  tallJar: {
+    outline:
+      "M38 12 L38 25 Q38 30 34 33 Q30 37 30 44 L30 130 Q30 140 40 140 L80 140 Q90 140 90 130 L90 44 Q90 37 86 33 Q82 30 82 25 L82 12",
+    inside:
+      "M38 12 L38 25 Q38 30 34 33 Q30 37 30 44 L30 130 Q30 140 40 140 L80 140 Q90 140 90 130 L90 44 Q90 37 86 33 Q82 30 82 25 L82 12 Z",
+    level: 40,
+    lines: "M35 12 H85",
+    threads: "M38 18 H82 M38 24 H82",
+    wheel: [86, 12],
   },
-  rocks: {
-    outline: "M26 58 L32 131 Q33 139 41 139 L79 139 Q87 139 88 131 L94 58",
-    inside: "M26 58 L32 131 Q33 139 41 139 L79 139 Q87 139 88 131 L94 58 Z",
-    level: 76,
+  wine: {
+    outline: "M38 18 C28 44 31 78 60 84 C89 78 92 44 82 18",
+    inside: "M38 18 C28 44 31 78 60 84 C89 78 92 44 82 18 Z",
+    level: 40,
+    lines: "M60 84 L60 134 M40 139 Q60 130 80 139",
+    wheel: [84, 20],
   },
+};
+
+const iceStyle = {
+  fill: "rgba(255,255,255,0.16)",
+  stroke: "rgba(255,255,255,0.55)",
+  strokeWidth: 1.4,
 };
 
 function GlassArt({ cocktail, id }: { cocktail: Cocktail; id: string }) {
   const shape = glassShapes[cocktail.glass];
   const [top, bottom] = cocktail.colors;
+  const [wheelX, wheelY] = shape.wheel;
 
   return (
     <svg
@@ -252,6 +276,16 @@ function GlassArt({ cocktail, id }: { cocktail: Cocktail; id: string }) {
         </clipPath>
       </defs>
 
+      {/* Сламка във високия буркан */}
+      {cocktail.glass === "tallJar" && (
+        <path
+          d="M70 2 L58 126"
+          stroke="rgba(255,255,255,0.9)"
+          strokeWidth="3.4"
+          strokeLinecap="round"
+        />
+      )}
+
       <g clipPath={`url(#${id}-clip)`}>
         <rect
           x="0"
@@ -259,6 +293,7 @@ function GlassArt({ cocktail, id }: { cocktail: Cocktail; id: string }) {
           width="120"
           height="150"
           fill={`url(#${id}-liquid)`}
+          opacity="0.94"
         />
 
         {cocktail.foam && (
@@ -272,45 +307,70 @@ function GlassArt({ cocktail, id }: { cocktail: Cocktail; id: string }) {
           />
         )}
 
-        {cocktail.glass === "highball" && (
-          <g
-            fill="rgba(255,255,255,0.16)"
-            stroke="rgba(255,255,255,0.55)"
-            strokeWidth="1.4"
-          >
-            <rect x="43" y="46" width="22" height="22" rx="4" transform="rotate(-12 54 57)" />
-            <rect x="55" y="74" width="22" height="22" rx="4" transform="rotate(14 66 85)" />
-            <rect x="42" y="102" width="22" height="22" rx="4" transform="rotate(-8 53 113)" />
+        {cocktail.glass === "tallJar" && (
+          <g {...iceStyle}>
+            <rect x="38" y="50" width="22" height="22" rx="4" transform="rotate(-12 49 61)" />
+            <rect x="58" y="76" width="22" height="22" rx="4" transform="rotate(14 69 87)" />
+            <rect x="40" y="104" width="22" height="22" rx="4" transform="rotate(-8 51 115)" />
           </g>
         )}
 
-        {cocktail.glass === "rocks" && (
-          <rect
-            x="42"
-            y="84"
-            width="36"
-            height="36"
-            rx="6"
-            transform="rotate(-10 60 102)"
-            fill="rgba(255,255,255,0.16)"
-            stroke="rgba(255,255,255,0.55)"
-            strokeWidth="1.4"
-          />
+        {cocktail.glass === "lowJar" && !cocktail.foam && (
+          <g {...iceStyle}>
+            <rect x="30" y="88" width="28" height="28" rx="5" transform="rotate(-10 44 102)" />
+            <rect x="62" y="98" width="26" height="26" rx="5" transform="rotate(12 75 111)" />
+          </g>
+        )}
+
+        {cocktail.glass === "wine" && (
+          <g {...iceStyle}>
+            <rect x="42" y="46" width="18" height="18" rx="4" transform="rotate(-14 51 55)" />
+            <rect x="60" y="56" width="18" height="18" rx="4" transform="rotate(10 69 65)" />
+          </g>
         )}
 
         {cocktail.sparkling && (
-          <g className="sip-bubbles" fill="rgba(255,255,255,0.8)">
-            <circle cx="47" cy="128" r="1.8" />
-            <circle cx="60" cy="118" r="1.3" />
-            <circle cx="72" cy="130" r="1.6" />
-            <circle cx="54" cy="96" r="1.2" />
-            <circle cx="68" cy="104" r="1.5" />
+          <g
+            className={
+              cocktail.glass === "wine"
+                ? "sip-bubbles sip-bubbles-short"
+                : "sip-bubbles"
+            }
+            fill="rgba(255,255,255,0.8)"
+          >
+            {cocktail.glass === "wine" ? (
+              <>
+                <circle cx="52" cy="76" r="1.6" />
+                <circle cx="62" cy="72" r="1.3" />
+                <circle cx="70" cy="76" r="1.5" />
+                <circle cx="56" cy="66" r="1.2" />
+                <circle cx="66" cy="68" r="1.4" />
+              </>
+            ) : (
+              <>
+                <circle cx="42" cy="130" r="1.8" />
+                <circle cx="60" cy="122" r="1.3" />
+                <circle cx="76" cy="132" r="1.6" />
+                <circle cx="52" cy="100" r="1.2" />
+                <circle cx="70" cy="108" r="1.5" />
+              </>
+            )}
           </g>
         )}
       </g>
 
+      {shape.threads && (
+        <path
+          d={shape.threads}
+          fill="none"
+          stroke="rgba(255,255,255,0.5)"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+      )}
+
       <path
-        d={shape.outline}
+        d={`${shape.outline} ${shape.lines}`}
         fill="none"
         stroke="rgba(255,255,255,0.92)"
         strokeWidth="2.4"
@@ -318,26 +378,11 @@ function GlassArt({ cocktail, id }: { cocktail: Cocktail; id: string }) {
         strokeLinejoin="round"
       />
 
-      {shape.extra && (
-        <path
-          d={shape.extra}
-          fill="none"
-          stroke="rgba(255,255,255,0.92)"
-          strokeWidth="2.4"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      )}
-
-      {/* Гарнитура: резен на ръба на чашата */}
-      {cocktail.glass === "coupe" ? (
+      {/* Гарнитура: цвете върху пяната или резен на ръба */}
+      {cocktail.foam ? (
         <circle cx="60" cy={shape.level + 4} r="5" fill={cocktail.garnish} />
       ) : (
-        <g
-          transform={
-            cocktail.glass === "rocks" ? "translate(90 56)" : "translate(84 18)"
-          }
-        >
+        <g transform={`translate(${wheelX} ${wheelY})`}>
           <circle r="11" fill={cocktail.garnish} opacity="0.95" />
           <circle
             r="11"
@@ -432,7 +477,7 @@ export default function Cocktails({ lang }: { lang: Lang }) {
 
                 <p className="sip-meta">
                   <span>{cocktail.volume}</span>
-                  <strong>{cocktail.price[lang]}</strong>
+                  <em>{vesselLabel[cocktail.glass][lang]}</em>
                 </p>
               </div>
             </li>
