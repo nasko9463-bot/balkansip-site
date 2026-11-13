@@ -260,7 +260,6 @@ export const articles: Article[] = [
 
 // Източници, които следим. Показват се под списъка с новини.
 export const followedSources: { name: string; note: string; url: string }[] = [
-  { name: "Indie Bartender", note: "Данил Невски", url: "https://indiebartender.com/" },
   { name: "Kevin Kos", note: "техники и рецепти", url: "https://www.kevinkos.com/" },
   { name: "Jeffrey Morgenthaler", note: "техники", url: "https://jeffreymorgenthaler.com/" },
   { name: "Difford's Guide", note: "енциклопедия", url: "https://www.diffordsguide.com/" },
