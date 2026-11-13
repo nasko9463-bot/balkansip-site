@@ -4641,35 +4641,196 @@ textarea:focus-visible {
 .menu-dropdown[open] > .category-content {
   margin-top: clamp(20px, 3vw, 40px);
 }
+
 /* =========================================================
    FORMATS (каравана, портативен бар, раница)
    ========================================================= */
 
 .formats-section {
   position: relative;
+  isolation: isolate;
   overflow: hidden;
 
-  padding: 130px clamp(24px, 8vw, 150px) 140px;
+  padding: 140px clamp(24px, 8vw, 150px) 150px;
 
-  background: #0c1f45;
+  background:
+    radial-gradient(
+      50% 40% at 90% 4%,
+      rgba(235, 175, 65, 0.1),
+      transparent 70%
+    ),
+    radial-gradient(
+      55% 50% at 6% 92%,
+      rgba(64, 120, 255, 0.2),
+      transparent 70%
+    ),
+    linear-gradient(180deg, #0a1b3d 0%, #0c2150 55%, #0a1b3d 100%);
   color: var(--white);
 }
 
-.formats-section::before {
-  content: "";
+/* ---------- 3D форми на заден план ---------- */
 
+.formats-shapes {
   position: absolute;
-  left: -200px;
-  bottom: -260px;
-
-  width: 560px;
-  height: 560px;
-
-  border: 1px solid rgba(235, 175, 65, 0.12);
-  border-radius: 50%;
+  inset: 0;
+  z-index: 0;
 
   pointer-events: none;
 }
+
+.formats-shape {
+  position: absolute;
+  left: 0;
+
+  width: var(--size);
+  height: var(--size);
+
+  perspective: 900px;
+
+  animation-name: formats-drift;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+
+  will-change: transform;
+}
+
+.formats-shape-reverse {
+  animation-name: formats-drift-back;
+}
+
+@keyframes formats-drift {
+  from {
+    transform: translate3d(-22vw, 40px, 0);
+  }
+
+  to {
+    transform: translate3d(112vw, -90px, 0);
+  }
+}
+
+@keyframes formats-drift-back {
+  from {
+    transform: translate3d(112vw, -50px, 0);
+  }
+
+  to {
+    transform: translate3d(-22vw, 70px, 0);
+  }
+}
+
+@keyframes formats-spin {
+  from {
+    transform: rotateX(-18deg) rotateY(0deg) rotateZ(8deg);
+  }
+
+  to {
+    transform: rotateX(342deg) rotateY(360deg) rotateZ(8deg);
+  }
+}
+
+.formats-cube,
+.formats-ring {
+  position: absolute;
+  inset: 0;
+
+  transform-style: preserve-3d;
+
+  animation: formats-spin var(--spin) linear infinite;
+}
+
+.formats-cube span {
+  position: absolute;
+  inset: 0;
+
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 12%;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.16),
+    rgba(255, 255, 255, 0.02) 60%
+  );
+
+  box-shadow: inset 0 0 26px rgba(255, 255, 255, 0.07);
+}
+
+.formats-shape-gold .formats-cube span {
+  border-color: rgba(235, 175, 65, 0.5);
+
+  background: linear-gradient(
+    135deg,
+    rgba(235, 175, 65, 0.22),
+    rgba(235, 175, 65, 0.02) 60%
+  );
+
+  box-shadow: inset 0 0 26px rgba(235, 175, 65, 0.1);
+}
+
+.formats-cube span:nth-child(1) {
+  transform: translateZ(calc(var(--size) / 2));
+}
+
+.formats-cube span:nth-child(2) {
+  transform: rotateY(180deg) translateZ(calc(var(--size) / 2));
+}
+
+.formats-cube span:nth-child(3) {
+  transform: rotateY(90deg) translateZ(calc(var(--size) / 2));
+}
+
+.formats-cube span:nth-child(4) {
+  transform: rotateY(-90deg) translateZ(calc(var(--size) / 2));
+}
+
+.formats-cube span:nth-child(5) {
+  transform: rotateX(90deg) translateZ(calc(var(--size) / 2));
+}
+
+.formats-cube span:nth-child(6) {
+  transform: rotateX(-90deg) translateZ(calc(var(--size) / 2));
+}
+
+.formats-ring {
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 30px rgba(255, 255, 255, 0.08),
+    inset 0 0 30px rgba(255, 255, 255, 0.06);
+}
+
+.formats-shape-gold .formats-ring {
+  border-color: rgba(235, 175, 65, 0.55);
+
+  box-shadow:
+    0 0 34px rgba(235, 175, 65, 0.16),
+    inset 0 0 34px rgba(235, 175, 65, 0.1);
+}
+
+.formats-orb {
+  position: absolute;
+  inset: 0;
+
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle at 32% 28%,
+    rgba(255, 255, 255, 0.75),
+    rgba(190, 215, 255, 0.3) 38%,
+    rgba(190, 215, 255, 0.04) 72%
+  );
+}
+
+.formats-shape-gold .formats-orb {
+  background: radial-gradient(
+    circle at 32% 28%,
+    rgba(255, 240, 205, 0.85),
+    rgba(235, 175, 65, 0.4) 38%,
+    rgba(235, 175, 65, 0.04) 72%
+  );
+}
+
+/* ---------- Заглавна част ---------- */
 
 .formats-shell {
   position: relative;
@@ -4699,13 +4860,35 @@ textarea:focus-visible {
 }
 
 .formats-kicker {
-  margin-bottom: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 
-  font-size: 13px;
+  margin-bottom: 22px;
+  padding: 8px 16px;
+
+  border: 1px solid rgba(235, 175, 65, 0.35);
+  border-radius: 999px;
+
+  background: rgba(235, 175, 65, 0.08);
+
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.24em;
 
   color: var(--yellow);
+}
+
+.formats-kicker::before {
+  content: "";
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--yellow);
+  box-shadow: 0 0 12px var(--yellow);
 }
 
 .formats-content h2 {
@@ -4721,46 +4904,105 @@ textarea:focus-visible {
 }
 
 .formats-content h2 span {
-  color: var(--yellow);
+  background: linear-gradient(100deg, #f6cf7c 0%, var(--yellow) 55%, #d6902a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
 }
 
 .formats-intro {
   width: min(680px, 100%);
-  margin-top: 24px;
+  margin-top: 26px;
 
   font-size: 19px;
   line-height: 1.6;
 
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.74);
 }
 
+/* ---------- Карти ---------- */
+
 .format-card {
+  position: relative;
   min-width: 0;
 
   display: flex;
   flex-direction: column;
 
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 28px;
 
-  background: rgba(255, 255, 255, 0.035);
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.03) 45%
+  );
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(140%);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 30px 60px -30px rgba(0, 0, 0, 0.55);
 
   overflow: hidden;
+
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.format-card:hover {
+  transform: translateY(-6px);
+
+  border-color: rgba(235, 175, 65, 0.45);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 40px 70px -30px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(235, 175, 65, 0.12);
 }
 
 .format-card-feature {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
 
-  margin-top: 58px;
+  margin-top: 64px;
 }
 
 .formats-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
+  gap: 24px;
 
-  margin-top: 20px;
+  margin-top: 24px;
+}
+
+/* Плавно появяване при скролиране (включва се от скрипта) */
+
+.formats-reveal .format-card {
+  opacity: 0;
+  transform: translateY(34px);
+
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.formats-reveal .format-card-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.formats-reveal .format-card-visible:hover {
+  transform: translateY(-6px);
+}
+
+.formats-reveal .formats-grid .format-card:nth-child(2) {
+  transition-delay: 0.12s, 0.12s, 0s, 0s;
 }
 
 /* Снимки на караваната */
@@ -4770,15 +5012,15 @@ textarea:focus-visible {
 
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 
-  padding: 14px;
+  padding: 16px;
 }
 
 .format-photo {
   aspect-ratio: 3 / 2;
 
-  border-radius: 12px;
+  border-radius: 18px;
   overflow: hidden;
 
   background: #081632;
@@ -4790,12 +5032,18 @@ textarea:focus-visible {
 
   display: block;
   object-fit: cover;
+
+  transition: transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.format-card:hover .format-photo img {
+  transform: scale(1.04);
 }
 
 .format-thumbs {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
+  gap: 12px;
 }
 
 .format-thumb {
@@ -4804,22 +5052,24 @@ textarea:focus-visible {
   padding: 0;
 
   border: 2px solid transparent;
-  border-radius: 10px;
+  border-radius: 14px;
   overflow: hidden;
 
   background: #081632;
   cursor: pointer;
 
-  opacity: 0.6;
+  opacity: 0.55;
 
   transition:
-    opacity 0.2s ease,
-    border-color 0.2s ease;
+    opacity 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
 }
 
 .format-thumb:hover,
 .format-thumb:focus-visible {
   opacity: 1;
+  transform: translateY(-2px);
 }
 
 .format-thumb-active {
@@ -4838,87 +5088,138 @@ textarea:focus-visible {
 /* Място за снимки, които още ги няма */
 
 .format-soon {
+  position: relative;
   aspect-ratio: 16 / 9;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
 
-  margin: 14px 14px 0;
+  margin: 16px 16px 0;
 
-  border: 1px dashed rgba(235, 175, 65, 0.45);
-  border-radius: 12px;
+  border: 1px solid rgba(235, 175, 65, 0.3);
+  border-radius: 18px;
+  overflow: hidden;
 
   background:
-    repeating-linear-gradient(
-      135deg,
-      rgba(235, 175, 65, 0.05) 0 14px,
-      transparent 14px 28px
+    radial-gradient(
+      70% 90% at 50% 110%,
+      rgba(235, 175, 65, 0.22),
+      transparent 70%
     ),
-    #081632;
+    linear-gradient(160deg, #0b1c40, #081632);
+}
+
+.format-soon::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    110deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.09) 50%,
+    transparent 65%
+  );
+  background-size: 250% 100%;
+
+  animation: formats-sheen 6s ease-in-out infinite;
+}
+
+@keyframes formats-sheen {
+  from {
+    background-position: 130% 0;
+  }
+
+  to {
+    background-position: -130% 0;
+  }
 }
 
 .format-soon-word {
+  position: relative;
+
   font-family: "Montserrat", sans-serif;
-  font-size: clamp(30px, 3.6vw, 46px);
+  font-size: clamp(30px, 3.6vw, 48px);
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.04em;
   text-transform: uppercase;
 
-  color: var(--yellow);
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--yellow);
 }
 
 .format-soon-note {
+  position: relative;
+
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.24em;
   text-transform: uppercase;
 
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* Текст на картата */
 
 .format-body {
+  position: relative;
   flex: 1;
 
   display: flex;
   flex-direction: column;
 
-  padding: clamp(24px, 3vw, 38px);
+  padding: clamp(26px, 3vw, 42px);
 }
 
 .format-number {
+  position: absolute;
+  top: clamp(14px, 2vw, 26px);
+  right: clamp(20px, 2.6vw, 36px);
+
   font-family: "Montserrat", sans-serif;
-  font-size: 13px;
+  font-size: clamp(54px, 6vw, 84px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.05em;
+
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.16);
+
+  pointer-events: none;
+}
+
+.format-tagline {
+  align-self: flex-start;
+  max-width: calc(100% - 96px);
+
+  padding: 6px 14px;
+
+  border-radius: 999px;
+
+  background: rgba(235, 175, 65, 0.12);
+
+  font-size: 15px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  line-height: 1.35;
 
   color: var(--yellow);
 }
 
 .format-body h3 {
-  margin-top: 10px;
+  margin-top: 18px;
 
   font-family: "Montserrat", sans-serif;
-  font-size: clamp(28px, 2.8vw, 40px);
+  font-size: clamp(30px, 3vw, 44px);
   font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.04em;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
 
   color: var(--white);
-}
-
-.format-tagline {
-  margin-top: 8px;
-
-  font-size: 18px;
-  font-weight: 600;
-
-  color: var(--yellow);
 }
 
 .format-description {
@@ -4927,107 +5228,125 @@ textarea:focus-visible {
   font-size: 18px;
   line-height: 1.6;
 
-  color: rgba(255, 255, 255, 0.74);
+  color: rgba(255, 255, 255, 0.76);
 }
 
 .format-facts {
-  margin-top: 22px;
+  display: grid;
+  gap: 10px;
 
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 24px;
 }
 
 .format-facts > div {
-  display: grid;
-  grid-template-columns: minmax(110px, 0.8fr) minmax(0, 1.6fr);
-  gap: 16px;
+  padding: 14px 16px;
 
-  padding: 12px 0;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
 
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.045);
 }
 
 .format-facts dt {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.52);
 }
 
 .format-facts dd {
-  margin: 0;
+  margin: 5px 0 0;
 
   font-size: 17px;
-  line-height: 1.45;
-
-  color: var(--white);
-}
-
-.format-footer {
-  margin-top: auto;
-  padding-top: 26px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 18px;
-}
-
-.format-price {
-  font-size: 16px;
-  line-height: 1.5;
-
-  color: rgba(255, 255, 255, 0.66);
-}
-
-.format-price strong {
-  font-family: "Montserrat", sans-serif;
-  font-size: 26px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  line-height: 1.4;
 
   color: var(--white);
 }
 
 .format-cta {
+  align-self: flex-start;
+
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 10px;
 
-  min-height: 46px;
-  padding: 0 24px;
+  min-height: 50px;
+  margin-top: auto;
+  padding: 0 26px;
 
-  border: 1px solid var(--yellow);
   border-radius: 999px;
+
+  background: var(--yellow);
 
   font-size: 16px;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
 
-  color: var(--yellow);
+  color: var(--blue);
   text-decoration: none;
 
+  box-shadow: 0 14px 30px -12px rgba(235, 175, 65, 0.7);
+
   transition:
-    background 0.2s ease,
-    color 0.2s ease;
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.format-facts + .format-cta {
+  margin-top: 28px;
+}
+
+.format-cta svg {
+  width: 18px;
+  height: 18px;
+
+  transition: transform 0.25s ease;
 }
 
 .format-cta:hover,
 .format-cta:focus-visible {
-  background: var(--yellow);
-  color: var(--blue);
+  background: #f6c665;
+
+  box-shadow: 0 18px 36px -12px rgba(235, 175, 65, 0.85);
+}
+
+.format-cta:hover svg,
+.format-cta:focus-visible svg {
+  transform: translateX(4px);
+}
+
+@media (min-width: 1051px) {
+  .format-card-feature .format-photo {
+    flex: 1;
+    aspect-ratio: auto;
+    min-height: 320px;
+  }
+
+  .format-card-feature .format-body {
+    justify-content: center;
+  }
+
+  .format-card-feature .format-cta {
+    margin-top: 28px;
+  }
 }
 
 @media (max-width: 1050px) {
-  .format-card-feature {
+  .format-card-feature,
+  .formats-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .formats-shell {
+    grid-template-columns: 60px minmax(0, 1fr);
   }
 }
 
 @media (max-width: 850px) {
   .formats-section {
-    padding: 90px 22px 100px;
+    padding: 96px 22px 104px;
   }
 
   .formats-shell {
@@ -5045,46 +5364,87 @@ textarea:focus-visible {
   }
 
   .format-card-feature {
-    margin-top: 40px;
+    margin-top: 44px;
+  }
+
+  .format-card {
+    border-radius: 22px;
+  }
+
+  .formats-shape-desktop {
+    display: none;
+  }
+
+  .formats-shape {
+    width: calc(var(--size) * 0.7);
+    height: calc(var(--size) * 0.7);
+  }
+
+  .formats-cube span:nth-child(n) {
+    --size-half: calc(var(--size) * 0.35);
+  }
+
+  .formats-cube span:nth-child(1) {
+    transform: translateZ(var(--size-half));
+  }
+
+  .formats-cube span:nth-child(2) {
+    transform: rotateY(180deg) translateZ(var(--size-half));
+  }
+
+  .formats-cube span:nth-child(3) {
+    transform: rotateY(90deg) translateZ(var(--size-half));
+  }
+
+  .formats-cube span:nth-child(4) {
+    transform: rotateY(-90deg) translateZ(var(--size-half));
+  }
+
+  .formats-cube span:nth-child(5) {
+    transform: rotateX(90deg) translateZ(var(--size-half));
+  }
+
+  .formats-cube span:nth-child(6) {
+    transform: rotateX(-90deg) translateZ(var(--size-half));
   }
 }
 
 @media (max-width: 520px) {
+  .formats-kicker {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+  }
+
   .formats-intro,
   .format-description {
     font-size: 17px;
   }
 
-  .format-facts > div {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 4px;
-  }
-
   .format-cta {
-    width: 100%;
+    align-self: stretch;
+    justify-content: center;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .formats-shape,
+  .formats-cube,
+  .formats-ring,
+  .format-soon::before {
+    animation-play-state: paused;
+  }
+
+  .format-card,
+  .format-photo img,
   .format-thumb,
-  .format-cta {
+  .format-cta,
+  .format-cta svg {
     transition: none;
   }
-}
 
-.format-price span {
-  display: block;
-  margin-top: 4px;
-}
-
-@media (min-width: 1051px) {
-  .format-card-feature .format-photo {
-    flex: 1;
-    aspect-ratio: auto;
-    min-height: 320px;
-  }
-
-  .format-card-feature .format-thumbs {
-    flex: none;
+  .format-card:hover,
+  .format-card:hover .format-photo img,
+  .format-thumb:hover {
+    transform: none;
   }
 }

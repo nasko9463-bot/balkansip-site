@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { type CSSProperties, useEffect, useRef, useState } from "react";
 
 type Lang = "bg" | "en";
 
@@ -12,8 +12,6 @@ type FormatCopy = {
   tagline: string;
   description: string;
   facts: Fact[];
-  price: string;
-  priceNote: string;
 };
 
 const caravanPhotos = [
@@ -68,9 +66,6 @@ const copy = {
           { label: "Нужно на място", value: "Ток 220V и равен терен" },
           { label: "Минимална поръчка", value: "60 напитки" },
         ],
-        price: "от 480 €",
-        priceNote:
-          "на събитие. Барманите и коктейлите се оферират според броя гости.",
       },
       {
         number: "02",
@@ -82,9 +77,6 @@ const copy = {
           { label: "Подходящ за", value: "Зали и закрити пространства" },
           { label: "Минимална поръчка", value: "60 напитки" },
         ],
-        price: "от 180 €",
-        priceNote:
-          "на събитие. Барманите и коктейлите се оферират според броя гости.",
       },
       {
         number: "03",
@@ -103,8 +95,6 @@ const copy = {
             value: "Един вид на зареждане, избран предварително",
           },
         ],
-        price: "900 €",
-        priceNote: "за 80 коктейла, с включен човек до 6 часа.",
       },
     ] as FormatCopy[],
   },
@@ -138,9 +128,6 @@ const copy = {
           },
           { label: "Minimum order", value: "60 drinks" },
         ],
-        price: "from €480",
-        priceNote:
-          "per event. Bartenders and cocktails are quoted by guest count.",
       },
       {
         number: "02",
@@ -152,9 +139,6 @@ const copy = {
           { label: "Best for", value: "Halls and indoor venues" },
           { label: "Minimum order", value: "60 drinks" },
         ],
-        price: "from €180",
-        priceNote:
-          "per event. Bartenders and cocktails are quoted by guest count.",
       },
       {
         number: "03",
@@ -173,8 +157,6 @@ const copy = {
             value: "One kind per fill, chosen in advance",
           },
         ],
-        price: "€900",
-        priceNote: "for 80 cocktails, with a server for up to 6 hours.",
       },
     ] as FormatCopy[],
   },
@@ -183,9 +165,12 @@ const copy = {
 function FormatBody({ format, cta }: { format: FormatCopy; cta: string }) {
   return (
     <div className="format-body">
-      <p className="format-number">{format.number}</p>
-      <h3>{format.name}</h3>
+      <span className="format-number" aria-hidden="true">
+        {format.number}
+      </span>
+
       <p className="format-tagline">{format.tagline}</p>
+      <h3>{format.name}</h3>
       <p className="format-description">{format.description}</p>
 
       <dl className="format-facts">
@@ -197,26 +182,128 @@ function FormatBody({ format, cta }: { format: FormatCopy; cta: string }) {
         ))}
       </dl>
 
-      <div className="format-footer">
-        <p className="format-price">
-          <strong>{format.price}</strong> <span>{format.priceNote}</span>
-        </p>
+      <a href="#contact" className="format-cta">
+        <span>{cta}</span>
+        <svg viewBox="0 0 20 20" aria-hidden="true">
+          <path
+            d="M4 10h11M10.5 5.5 15 10l-4.5 4.5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </a>
+    </div>
+  );
+}
 
-        <a href="#contact" className="format-cta">
-          {cta}
-        </a>
-      </div>
+type Shape = {
+  kind: "cube" | "ring" | "orb";
+  size: number;
+  top: string;
+  duration: number;
+  delay: number;
+  spin: number;
+  reverse?: boolean;
+  gold?: boolean;
+  desktopOnly?: boolean;
+};
+
+// Ледени кубчета, обръчи и мехурчета, които бавно прелитат зад картите.
+const shapes: Shape[] = [
+  { kind: "cube", size: 120, top: "6%", duration: 95, delay: -20, spin: 38, gold: true },
+  { kind: "cube", size: 64, top: "30%", duration: 70, delay: -48, spin: 26, reverse: true },
+  { kind: "ring", size: 150, top: "44%", duration: 110, delay: -75, spin: 30, gold: true, desktopOnly: true },
+  { kind: "orb", size: 46, top: "18%", duration: 80, delay: -8, spin: 0, reverse: true },
+  { kind: "cube", size: 90, top: "62%", duration: 105, delay: -60, spin: 44, desktopOnly: true },
+  { kind: "orb", size: 28, top: "74%", duration: 65, delay: -30, spin: 0, gold: true },
+  { kind: "ring", size: 84, top: "84%", duration: 88, delay: -12, spin: 22, reverse: true },
+  { kind: "cube", size: 52, top: "90%", duration: 76, delay: -55, spin: 30, gold: true, desktopOnly: true },
+];
+
+function FloatingShapes() {
+  return (
+    <div className="formats-shapes" aria-hidden="true">
+      {shapes.map((shape, index) => (
+        <div
+          key={index}
+          className={[
+            "formats-shape",
+            shape.reverse ? "formats-shape-reverse" : "",
+            shape.gold ? "formats-shape-gold" : "",
+            shape.desktopOnly ? "formats-shape-desktop" : "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
+          style={
+            {
+              "--size": `${shape.size}px`,
+              "--spin": `${shape.spin}s`,
+              top: shape.top,
+              animationDuration: `${shape.duration}s`,
+              animationDelay: `${shape.delay}s`,
+            } as CSSProperties
+          }
+        >
+          {shape.kind === "cube" && (
+            <div className="formats-cube">
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+            </div>
+          )}
+          {shape.kind === "ring" && <div className="formats-ring" />}
+          {shape.kind === "orb" && <div className="formats-orb" />}
+        </div>
+      ))}
     </div>
   );
 }
 
 export default function Formats({ lang }: { lang: Lang }) {
   const [activePhoto, setActivePhoto] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
   const t = copy[lang];
   const [caravan, ...upcoming] = t.formats;
 
+  // Картите се появяват плавно, когато влязат в екрана.
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section || !("IntersectionObserver" in window)) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const cards = Array.from(section.querySelectorAll(".format-card"));
+    section.classList.add("formats-reveal");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("format-card-visible");
+            observer.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.12 },
+    );
+
+    cards.forEach((card) => observer.observe(card));
+
+    return () => {
+      observer.disconnect();
+      section.classList.remove("formats-reveal");
+    };
+  }, []);
+
   return (
-    <section className="formats-section" id="formats">
+    <section className="formats-section" id="formats" ref={sectionRef}>
+      <FloatingShapes />
+
       <div className="formats-shell">
         <div className="formats-label">
           <p>{t.label}</p>
