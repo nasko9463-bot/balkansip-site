@@ -5448,3 +5448,490 @@ textarea:focus-visible {
     transform: none;
   }
 }
+
+/* =========================================================
+   КОКТЕЙЛИ (новото меню)
+   ========================================================= */
+
+.sips-section {
+  position: relative;
+  overflow: hidden;
+
+  padding: 140px clamp(24px, 6vw, 110px) 150px;
+
+  background:
+    radial-gradient(
+      45% 35% at 50% 0%,
+      rgba(235, 175, 65, 0.12),
+      transparent 70%
+    ),
+    linear-gradient(180deg, #143066 0%, #0f2552 100%);
+  color: var(--white);
+}
+
+.sips-shell {
+  width: min(1320px, 100%);
+  margin: 0 auto;
+}
+
+.sips-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+}
+
+.sips-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 22px;
+  padding: 8px 16px;
+
+  border: 1px solid rgba(235, 175, 65, 0.35);
+  border-radius: 999px;
+
+  background: rgba(235, 175, 65, 0.08);
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+
+  color: var(--yellow);
+}
+
+.sips-kicker::before {
+  content: "";
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--yellow);
+  box-shadow: 0 0 12px var(--yellow);
+}
+
+.sips-heading h2 {
+  max-width: 980px;
+  margin: 0;
+
+  font-family: "Montserrat", sans-serif;
+  font-size: clamp(40px, 5.6vw, 78px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.055em;
+
+  color: var(--white);
+}
+
+.sips-heading h2 span {
+  background: linear-gradient(100deg, #f6cf7c 0%, var(--yellow) 55%, #d6902a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
+}
+
+.sips-intro {
+  width: min(640px, 100%);
+  margin-top: 24px;
+
+  font-size: 19px;
+  line-height: 1.6;
+
+  color: rgba(255, 255, 255, 0.74);
+}
+
+/* ---------- Карти на коктейлите ---------- */
+
+.sips-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+
+  margin: 64px 0 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.sip-card {
+  position: relative;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 26px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.03)
+  );
+
+  box-shadow: 0 30px 50px -34px rgba(0, 0, 0, 0.7);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.sip-card:hover {
+  transform: translateY(-8px);
+
+  border-color: color-mix(in srgb, var(--sip-a) 60%, transparent);
+
+  box-shadow: 0 40px 60px -34px color-mix(in srgb, var(--sip-b) 70%, #000);
+}
+
+.sip-art {
+  position: relative;
+
+  height: 232px;
+
+  display: grid;
+  place-items: center;
+
+  background: radial-gradient(
+    62% 70% at 50% 62%,
+    color-mix(in srgb, var(--sip-a) 34%, transparent),
+    transparent 72%
+  );
+}
+
+.sip-art::before {
+  content: "";
+
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+
+  width: 130px;
+  height: 130px;
+
+  border-radius: 50%;
+
+  background: var(--sip-b);
+  filter: blur(42px);
+  opacity: 0.55;
+
+  transform: translateX(-50%);
+
+  transition: opacity 0.4s ease;
+}
+
+.sip-card:hover .sip-art::before {
+  opacity: 0.85;
+}
+
+.sip-index {
+  position: absolute;
+  top: 18px;
+  left: 22px;
+
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.sip-glass {
+  position: relative;
+
+  height: 172px;
+  width: auto;
+
+  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.35));
+
+  transform-origin: 50% 90%;
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.sip-card:hover .sip-glass {
+  transform: rotate(-6deg) translateY(-4px);
+}
+
+.sip-bubbles circle {
+  transform-box: fill-box;
+
+  animation: sip-bubble 3.4s linear infinite;
+}
+
+.sip-bubbles circle:nth-child(2) {
+  animation-delay: -0.9s;
+}
+
+.sip-bubbles circle:nth-child(3) {
+  animation-delay: -1.7s;
+}
+
+.sip-bubbles circle:nth-child(4) {
+  animation-delay: -2.3s;
+}
+
+.sip-bubbles circle:nth-child(5) {
+  animation-delay: -2.9s;
+}
+
+@keyframes sip-bubble {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translateY(-78px);
+    opacity: 0;
+  }
+}
+
+.sip-body {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 4px 24px 22px;
+}
+
+.sip-base {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.sip-base::before {
+  content: "";
+
+  width: 9px;
+  height: 9px;
+
+  border-radius: 50%;
+
+  background: linear-gradient(135deg, var(--sip-a), var(--sip-b));
+}
+
+.sip-body h3 {
+  margin-top: 10px;
+
+  font-family: "Montserrat", sans-serif;
+  font-size: clamp(21px, 1.7vw, 25px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+
+  color: var(--white);
+}
+
+.sip-ingredients {
+  margin-top: 12px;
+  padding-bottom: 20px;
+
+  font-size: 17px;
+  line-height: 1.5;
+
+  color: rgba(255, 255, 255, 0.74);
+}
+
+.sip-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+
+  margin-top: auto;
+  padding-top: 16px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.sip-meta span {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.sip-meta strong {
+  font-family: "Montserrat", sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+
+  color: var(--yellow);
+}
+
+/* Плавно появяване при скролиране (включва се от скрипта) */
+
+.sips-reveal .sip-card {
+  opacity: 0;
+  transform: translateY(30px);
+
+  transition:
+    opacity 0.7s ease var(--sip-delay),
+    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) var(--sip-delay),
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.sips-reveal .sip-card-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.sips-reveal .sip-card-visible:hover {
+  transform: translateY(-8px);
+}
+
+/* ---------- Бележка под менюто ---------- */
+
+.sips-note {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+
+  margin-top: 28px;
+  padding: 30px clamp(24px, 3vw, 40px);
+
+  border: 1px solid rgba(235, 175, 65, 0.3);
+  border-radius: 26px;
+
+  background: rgba(235, 175, 65, 0.07);
+}
+
+.sips-note h3 {
+  font-family: "Montserrat", sans-serif;
+  font-size: clamp(21px, 2vw, 28px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+
+  color: var(--white);
+}
+
+.sips-note p {
+  margin-top: 8px;
+
+  font-size: 18px;
+  line-height: 1.5;
+
+  color: rgba(255, 255, 255, 0.74);
+}
+
+.sips-note .format-cta {
+  flex: none;
+  align-self: center;
+
+  margin: 0;
+}
+
+@media (max-width: 1100px) {
+  .sips-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 850px) {
+  .sips-section {
+    padding: 96px 22px 104px;
+  }
+
+  .sips-grid {
+    margin-top: 44px;
+  }
+
+  .sips-note {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sips-note .format-cta {
+    align-self: stretch;
+    justify-content: center;
+  }
+}
+
+/* На телефон коктейлите се разглеждат с плъзгане настрани. */
+
+@media (max-width: 640px) {
+  .sips-grid {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 78%;
+    gap: 14px;
+
+    margin-inline: -22px;
+    padding: 6px 22px 18px;
+
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 22px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sips-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sip-card {
+    scroll-snap-align: start;
+  }
+
+  .sip-card:hover,
+  .sips-reveal .sip-card-visible:hover {
+    transform: none;
+  }
+
+  .sips-kicker {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+  }
+
+  .sips-intro,
+  .sips-note p {
+    font-size: 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sip-bubbles circle {
+    animation: none;
+    opacity: 0.8;
+  }
+
+  .sip-card,
+  .sip-glass,
+  .sip-art::before {
+    transition: none;
+  }
+
+  .sip-card:hover,
+  .sip-card:hover .sip-glass {
+    transform: none;
+  }
+}
