@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { FormEvent, useState } from "react";
 import Cocktails from "./components/Cocktails";
 import Formats from "./components/Formats";
@@ -96,6 +97,9 @@ export default function Home() {
           <a href="#menu" onClick={() => setIsNavOpen(false)}>
             Меню
           </a>
+          <Link href="/news" onClick={() => setIsNavOpen(false)}>
+            Новини
+          </Link>
           <a href="#partners" onClick={() => setIsNavOpen(false)}>
             Партньори
           </a>
@@ -431,6 +435,7 @@ export default function Home() {
             <a href="#about">За нас</a>
             <a href="#formats">Формати</a>
             <a href="#menu">Меню</a>
+            <Link href="/news">Новини</Link>
             <a href="#partners">Партньори</a>
             <a href="#contact">Свържи се с нас</a>
           </nav>
