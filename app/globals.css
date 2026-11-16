@@ -6827,3 +6827,18 @@ a:hover .news-cover-ring {
     transform: none;
   }
 }
+
+.news-source-extra {
+  margin-top: 10px;
+
+  font-size: 16px;
+  line-height: 1.45;
+
+  color: rgba(20, 47, 100, 0.66);
+}
+
+.news-source-extra a {
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

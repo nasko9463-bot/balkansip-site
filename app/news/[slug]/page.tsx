@@ -109,6 +109,15 @@ export default async function ArticlePage({ params }: Props) {
                   .filter(Boolean)
                   .join(" · ")}
               </p>
+
+              {article.alsoRead?.map((extra) => (
+                <p className="news-source-extra" key={extra.url}>
+                  Още по темата:{" "}
+                  <a href={extra.url} target="_blank" rel="noopener noreferrer">
+                    {extra.name}, „{extra.title}“
+                  </a>
+                </p>
+              ))}
             </div>
 
             <a
