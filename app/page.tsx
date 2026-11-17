@@ -201,7 +201,7 @@ export default function Home() {
           <div className="owners-photo">
             <div className="photo-frame">
               <img
-                src="/founders.jpg?v=2"
+                src="/founders.jpg?v=3"
                 alt="Собствениците на Balkan Sip"
                 className="owners-image"
               />
