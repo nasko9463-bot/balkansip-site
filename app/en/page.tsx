@@ -41,6 +41,8 @@ export default function Home() {
       reason: String(formData.get("reason") || "").trim(),
       social: String(formData.get("social") || "").trim(),
       message: String(formData.get("message") || "").trim(),
+      website: String(formData.get("website") || "").trim(),
+      lang: "en",
     };
 
     try {
@@ -333,6 +335,7 @@ export default function Home() {
                   type="text"
                   id="fullName"
                   name="fullName"
+                  maxLength={120}
                   placeholder="Your name"
                   required
                 />
@@ -344,6 +347,7 @@ export default function Home() {
                   type="email"
                   id="email"
                   name="email"
+                  maxLength={200}
                   placeholder="example@email.com"
                   required
                 />
@@ -355,6 +359,7 @@ export default function Home() {
                   type="text"
                   id="reason"
                   name="reason"
+                  maxLength={200}
                   placeholder="Event, partnership, enquiry..."
                   required
                 />
@@ -366,16 +371,27 @@ export default function Home() {
                   type="text"
                   id="social"
                   name="social"
+                  maxLength={200}
                   placeholder="Instagram, Facebook..."
                 />
               </div>
             </div>
+
+            <div className="contact-honeypot" aria-hidden="true">
+
+              <label htmlFor="website">Website</label>
+
+              <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off" />
+
+            </div>
+
 
             <div className="contact-field contact-message-field">
               <label htmlFor="message">Message *</label>
               <textarea
                 id="message"
                 name="message"
+                  maxLength={5000}
                 placeholder="Tell us what you have in mind..."
                 rows={7}
                 required

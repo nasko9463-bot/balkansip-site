@@ -6842,3 +6842,14 @@ a:hover .news-cover-ring {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+/* Скрито поле срещу ботове във формата за контакт */
+.contact-honeypot {
+  position: absolute;
+  left: -10000px;
+
+  width: 1px;
+  height: 1px;
+
+  overflow: hidden;
+}
