@@ -6853,3 +6853,8 @@ a:hover .news-cover-ring {
 
   overflow: hidden;
 }
+
+/* Полето, което остава само на последния ред във формата, заема цялата ширина */
+.contact-field-wide {
+  grid-column: 1 / -1;
+}

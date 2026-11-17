@@ -38,6 +38,7 @@ export default function Home() {
     const payload = {
       fullName: String(formData.get("fullName") || "").trim(),
       email: String(formData.get("email") || "").trim(),
+      company: String(formData.get("company") || "").trim(),
       reason: String(formData.get("reason") || "").trim(),
       social: String(formData.get("social") || "").trim(),
       message: String(formData.get("message") || "").trim(),
@@ -354,6 +355,18 @@ export default function Home() {
               </div>
 
               <div className="contact-field">
+                <label htmlFor="company">Company</label>
+                <input
+                  type="text"
+                  id="company"
+                  name="company"
+                  maxLength={160}
+                  autoComplete="organization"
+                  placeholder="If you are writing on behalf of a company"
+                />
+              </div>
+
+              <div className="contact-field">
                 <label htmlFor="reason">Reason for contact *</label>
                 <input
                   type="text"
@@ -365,7 +378,7 @@ export default function Home() {
                 />
               </div>
 
-              <div className="contact-field">
+              <div className="contact-field contact-field-wide">
                 <label htmlFor="social">Social media</label>
                 <input
                   type="text"

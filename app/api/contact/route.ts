@@ -14,6 +14,7 @@ const DEFAULT_FROM = "Balkan Sip Website <website@balkansip.bg>";
 const LIMITS = {
   fullName: 120,
   email: 200,
+  company: 160,
   reason: 200,
   social: 200,
   message: 5000,
@@ -78,6 +79,7 @@ export async function POST(request: Request) {
 
   const fullName = clean(body.fullName);
   const email = clean(body.email);
+  const company = clean(body.company);
   const reason = clean(body.reason);
   const social = clean(body.social);
   const message = clean(body.message);
@@ -93,6 +95,7 @@ export async function POST(request: Request) {
   if (
     fullName.length > LIMITS.fullName ||
     email.length > LIMITS.email ||
+    company.length > LIMITS.company ||
     reason.length > LIMITS.reason ||
     social.length > LIMITS.social ||
     message.length > LIMITS.message
@@ -122,8 +125,10 @@ export async function POST(request: Request) {
   const rows: [string, string][] = [
     ["Име", fullName],
     ["Имейл", email],
+    ...(company ? ([["Фирма", company]] as [string, string][]) : []),
     ["Повод за контакт", reason],
     ...(social ? ([["Социална мрежа", social]] as [string, string][]) : []),
+    ["Тип клиент", company ? "Фирма (B2B)" : "Частно лице (B2C)"],
     ["Език на сайта", lang === "en" ? "английски" : "български"],
   ];
 
@@ -159,7 +164,10 @@ export async function POST(request: Request) {
       from,
       to: [to],
       replyTo: email,
-      subject: `Ново запитване от ${fullName.replace(/[\r\n]+/g, " ")}`,
+      subject: `Ново запитване от ${fullName}${company ? `, ${company}` : ""}`.replace(
+        /[\r\n]+/g,
+        " ",
+      ),
       html,
       text,
     });
