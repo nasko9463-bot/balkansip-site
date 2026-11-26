@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FormEvent, useState } from "react";
 import Cocktails from "./components/Cocktails";
 import Formats from "./components/Formats";
+import { useNavMenu } from "./components/useNavMenu";
 
 const partners = [
   { name: "Дестилерия Исперих", image: "/partners/isperih.webp" },
@@ -23,7 +24,7 @@ export default function Home() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [formError, setFormError] = useState("");
-  const [isNavOpen, setIsNavOpen] = useState(false);
+  const { isNavOpen, setIsNavOpen, headerRef } = useNavMenu();
 
   async function handleContactSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -81,7 +82,7 @@ export default function Home() {
   return (
     <main className="site">
       {/* NAVIGATION */}
-      <header className="navbar">
+      <header className="navbar" ref={headerRef}>
         <a href="#about" className="nav-logo" aria-label="Balkan Sip">
           <img src="/balkan-sip-logo.png" alt="Balkan Sip" />
         </a>

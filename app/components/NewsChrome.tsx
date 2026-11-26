@@ -1,17 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useNavMenu } from "./useNavMenu";
 
 // Горна лента и футър за страниците с новини. Използват същите стилове
 // като началната страница, но връзките водят обратно към нея.
 
 export function NewsHeader() {
-  const [isNavOpen, setIsNavOpen] = useState(false);
+  const { isNavOpen, setIsNavOpen, headerRef } = useNavMenu();
   const close = () => setIsNavOpen(false);
 
   return (
-    <header className="navbar">
+    <header className="navbar" ref={headerRef}>
       <Link href="/" className="nav-logo" aria-label="Balkan Sip">
         <img src="/balkan-sip-logo.png" alt="Balkan Sip" />
       </Link>

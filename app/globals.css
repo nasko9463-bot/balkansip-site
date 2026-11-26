@@ -6858,3 +6858,13 @@ a:hover .news-cover-ring {
 .contact-field-wide {
   grid-column: 1 / -1;
 }
+
+/* Мобилно меню: превърта се, когато не се събира на екрана */
+@media (max-width: 850px) {
+  .nav-links.nav-links-open {
+    max-height: calc(100dvh - var(--navbar-height-mobile));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+}
